@@ -19,7 +19,9 @@ import com.yandex.mapkit.directions.driving.VehicleOptions;
 import com.yandex.mapkit.geometry.Point;
 
 import android.graphics.PointF;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.yandex.mapkit.MapKit;
@@ -44,6 +46,7 @@ import com.yandex.runtime.Error;
 import com.yandex.runtime.image.ImageProvider;
 import com.yandex.runtime.network.NetworkError;
 import com.yandex.runtime.network.RemoteError;
+import com.yandex.runtime.ui_view.ViewProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements UserLocationObjec
     private DrivingRouter drivingRouter;
     private DrivingSession drivingSession;
     private int[] colors = {0xFFFF0000, 0xFF00FF00, 0x00FFBBBB, 0xFF0000FF};
+
+
 
 
     @Override
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements UserLocationObjec
         mapObjects = binding.mapview.getMap().getMapObjects().addCollection();
         submitRequest();
         markerLayer();
+
     }
     @Override
     public	void onRequestPermissionsResult(int	requestCode, @NonNull String[]	permissions,
@@ -180,18 +186,18 @@ public class MainActivity extends AppCompatActivity implements UserLocationObjec
         userLocationLayer.setObjectListener(this);
     }
     public void markerLayer(){
-        PlacemarkMapObject marker = binding.mapview.getMap().getMapObjects().addPlacemark(new
-                Point(55.79498, 37.71146), ImageProvider.fromResource(this,
-                R.drawable.ic_action_));
+        ImageView icon = new ImageView(this);
+        icon.setImageResource(R.drawable.ic_action_);
+        PlacemarkMapObject marker =  mapObjects.addPlacemark(new Point(55.79498, 37.71146),new ViewProvider(icon));
         marker.addTapListener(new MapObjectTapListener() {
             @Override
             public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
-                /*Toast.makeText(getApplication(),"Marker click",
-                        Toast.LENGTH_SHORT).show();*/
                 Intent intent = new Intent(MainActivity.this, InfoActivity.class);
                 startActivity(intent);
                 return false;
             }
         });
+
+
     }
 }
