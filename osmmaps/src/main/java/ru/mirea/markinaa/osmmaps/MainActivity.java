@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
                             .ACCESS_FINE_LOCATION},
                     REQUEST_CODE_PERMISSION);
         }
+        locationNewOverlay = new MyLocationNewOverlay(new
+                GpsMyLocationProvider(getApplicationContext()), mapView);
+        locationNewOverlay.enableMyLocation();
+        mapView.getOverlays().add(this.locationNewOverlay);
         CompassOverlay compassOverlay = new CompassOverlay(getApplicationContext(), new
                 InternalCompassOrientationProvider(getApplicationContext()), mapView);
         compassOverlay.enableCompass();
@@ -109,10 +113,6 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_PERMISSION:
                 isWork = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                locationNewOverlay = new MyLocationNewOverlay(new
-                        GpsMyLocationProvider(getApplicationContext()), mapView);
-                locationNewOverlay.enableMyLocation();
-                mapView.getOverlays().add(this.locationNewOverlay);
                 break;
         }
         if (!isWork) {
